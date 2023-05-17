@@ -20,3 +20,7 @@ samples, guidance on mobile development, and a full API reference.
 <img src="https://github.com/omtrivedi110/e_commerce/assets/131134704/13e0f193-a1f6-4983-b0a7-4100f841840e" height="350px"></img>
 
 <img src="https://github.com/omtrivedi110/e_commerce/assets/131134704/583148d9-4124-49ff-88cd-1512a2525fce" height="350px"></img>
+
+<img src="https://github.com/omtrivedi110/e_commerce/assets/131134704/274d47e1-42a3-4a5e-89e4-1a3d3e6fefa3" height="350px"></img>
+
+
