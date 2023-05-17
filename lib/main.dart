@@ -2,7 +2,6 @@ import 'package:e_commerce/views/component/class.dart';
 import 'package:e_commerce/views/component/productlists.dart';
 import 'package:e_commerce/views/screens/likedpage.dart';
 import 'package:flutter/material.dart';
-
 import 'views/screens/addedcartpage.dart';
 import 'views/screens/pdfpage.dart';
 import 'views/screens/personaldetail.dart';
@@ -119,27 +118,51 @@ class _MyAppState extends State<MyApp> {
                                   MyRoutes.ProductDetail,
                                   arguments: index);
                             },
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: 140,
-                                  width: 170,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: NetworkImage(
-                                            product[index].thumbnail),
-                                        fit: BoxFit.fill),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: 140,
+                                    width: 170,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: NetworkImage(
+                                              product[index].thumbnail),
+                                          fit: BoxFit.fill),
+                                    ),
                                   ),
-                                ),
-                                Text(product[index].title),
-                                Text(
-                                  "₹ ${product[index].price}",
-                                  maxLines: 1,
-                                  style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600),
-                                )
-                              ],
+                                  Text(product[index].title),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "₹ ${product[index].price}",
+                                        maxLines: 1,
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      FloatingActionButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pushNamed(
+                                              MyRoutes.AddedCartPage,
+                                              arguments: index);
+                                          addcartproduct.add(product[index]);
+                                          print(
+                                              "---------------------------------");
+                                          print(product[index]);
+                                          print(
+                                              "---------------------------------");
+                                        },
+                                        mini: true,
+                                        child: const Icon(
+                                            Icons.shopping_cart_outlined),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

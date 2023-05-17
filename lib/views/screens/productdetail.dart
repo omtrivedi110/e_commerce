@@ -18,7 +18,7 @@ class _ProductDetailState extends State<ProductDetail> {
       appBar: AppBar(
         actions: [
           IconButton(
-              onPressed: () {}, icon: const Icon(Icons.shopping_cart_outlined))
+              onPressed: () {}, icon: const Icon(Icons.shopping_cart_outlined)),
         ],
         title: const Text("Detail Page"),
       ),

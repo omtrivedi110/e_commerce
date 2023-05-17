@@ -1928,6 +1928,8 @@ List<Product> product = products.map((e) => Product.fromMap(data: e)).toList();
 
 List addcartproduct = [];
 
+List likedproduct = [];
+
 List category = [
   "laptops",
   "smartphones",
