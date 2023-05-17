@@ -29,12 +29,10 @@ class Product {
   }
 }
 
-
-class MyRoutes{
+class MyRoutes {
   static String likedpage = "likepage";
   static String ProductDetail = "ProductDetailPage";
   static String AddedCartPage = "AddedCartPage";
-  static String PersonalDetail= "PersonalDetailPage";
-  static String PdfPage= "PdfPage";
-
+  static String PersonalDetail = "PersonalDetailPage";
+  static String PdfPage = "PdfPage";
 }

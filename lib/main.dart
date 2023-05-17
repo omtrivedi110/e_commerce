@@ -19,7 +19,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool theme = false;
-  String? filter;
+  String filter = "";
+  List<Product?> filterproduct = [];
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,14 @@ class _MyAppState extends State<MyApp> {
       ),
       home: Scaffold(
         appBar: AppBar(
-          centerTitle: true,
+          leading: IconButton(
+            onPressed: () {
+              setState(() {
+                filter = "";
+              });
+            },
+            icon: const Icon(Icons.lock_reset_outlined),
+          ),
           actions: [
             IconButton(
               onPressed: () {},
@@ -63,136 +71,94 @@ class _MyAppState extends State<MyApp> {
             "E_Commerce",
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(18.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              SingleChildScrollView(
+        body: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: [
-                    const Text("Filter :-"),
-                    ElevatedButton(
-                        onPressed: () {
-                          filter = "smartphones";
-                          setState(() {});
-                        },
-                        child: const Text("SmartPhone")),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    ElevatedButton(
-                        onPressed: () {
-                          filter = "laptops";
-                          setState(() {});
-                        },
-                        child: const Text("laptops")),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    ElevatedButton(
-                        onPressed: () {
-                          filter = "skincare";
-                          setState(() {});
-                        },
-                        child: const Text("skincare")),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    ElevatedButton(
-                        onPressed: () {
-                          filter = "fragrances";
-                          setState(() {});
-                        },
-                        child: const Text("fragrances")),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    ElevatedButton(
-                        onPressed: () {
-                          filter = "groceries";
-                          setState(() {});
-                        },
-                        child: const Text("groceries")),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                  ],
+                  children: category
+                      .map(
+                        (c) => ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              filter = c;
+                              filterproduct = product.map((e) {
+                                if (e.category == c) {
+                                  return e;
+                                }
+                              }).toList();
+                              filterproduct
+                                  .removeWhere((element) => element == null);
+                            });
+                          },
+                          child: Text(c),
+                        ),
+                      )
+                      .toList(),
                 ),
               ),
-              SizedBox(
-                height: 697,
-                width: double.infinity,
-                child: GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      childAspectRatio: 2 / 3,
-                      mainAxisSpacing: 5,
-                      crossAxisSpacing: 5,
-                    ),
-                    itemCount: products.length,
-                    itemBuilder: (BuildContext context, int index) => Card(
-                          child: Visibility(
-                            // visible: product[index].category == "$filter",
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pushNamed(
-                                    MyRoutes.ProductDetail,
-                                    arguments: index);
-                              },
-                              child: Container(
-                                alignment: Alignment.bottomCenter,
+            ),
+            Expanded(
+              flex: 13,
+              child: (filter.isEmpty)
+                  ? GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                      ),
+                      itemCount: product.length,
+                      itemBuilder: (context, index) => Container(
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 140,
+                              width: 170,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image:
+                                        NetworkImage(product[index].thumbnail),
+                                    fit: BoxFit.fill),
+                              ),
+                            ),
+                            Text(product[index].category),
+                          ],
+                        ),
+                      ),
+                    )
+                  : GridView(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                      ),
+                      children: List.generate(filterproduct.length, (index) {
+                        if (filterproduct[index]!.category == filter) {
+                          return Column(
+                            children: [
+                              Container(
+                                height: 140,
+                                width: 170,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                       image: NetworkImage(
-                                          product[index].thumbnail)),
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.primaries[index % 18].shade200,
-                                ),
-                                child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          const Spacer(),
-                                          Transform.scale(
-                                            scale: 0.5,
-                                            child: FloatingActionButton(
-                                              onPressed: () {},
-                                              child: Text(
-                                                "♡",
-                                                style: TextStyle(fontSize: 20),
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      const Spacer(),
-                                      Text(
-                                        "₹${product[index].price}",
-                                        style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        product[index].title,
-                                        style: const TextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
+                                          filterproduct[index]!.thumbnail),
+                                      fit: BoxFit.fill),
                                 ),
                               ),
-                            ),
-                          ),
-                        )),
-              ),
-            ],
-          ),
+                              Text(filterproduct[index]!.category),
+                            ],
+                          );
+                        } else {
+                          return Container();
+                        }
+                      }),
+                      // children: allProduct.map((element) {
+                      //    else {
+                      //     return Container();
+                      //   }
+                      // }).toList(),
+                    ),
+            ),
+          ],
         ),
       ),
     );

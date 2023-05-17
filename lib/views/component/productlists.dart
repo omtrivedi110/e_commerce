@@ -1927,3 +1927,26 @@ List<Map> products = [
 List<Product> product = products.map((e) => Product.fromMap(data: e)).toList();
 
 List addcartproduct = [];
+
+List category = [
+  "laptops",
+  "smartphones",
+  "mens-shoes",
+  "mens-shirts",
+  "mens-watches",
+  "womens-shoes",
+  "womens-dresses",
+  "womens-watches",
+  "womens-jewellery",
+  "tops",
+  "womens-bags",
+  "sunglasses",
+  "furniture",
+  "home-decoration",
+  "lighting",
+  "motorcycle",
+  "automotive",
+  "groceries",
+  "skincare",
+  "fragrances",
+];
