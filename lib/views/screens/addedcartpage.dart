@@ -10,6 +10,11 @@ class AdddedCartPage extends StatefulWidget {
 class _AdddedCartPageState extends State<AdddedCartPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Added Cart Page"),
+      ),
+      // body: GridView.builder(gridDelegate: , itemBuilder: itemBuilder),
+    );
   }
 }

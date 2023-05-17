@@ -26,6 +26,12 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     // Size s = MediaQuery.of(context).size;
     return MaterialApp(
+      // themeMode: ThemeData(elevatedButtonTheme: ElevatedButtonThemeData()),
+      debugShowCheckedModeBanner: false,
+      darkTheme: (theme) ? ThemeData.light() : ThemeData.dark(),
+      theme: ThemeData(
+        useMaterial3: true,
+      ),
       routes: {
         MyRoutes.likedpage: (context) => const LikedPage(),
         MyRoutes.ProductDetail: (context) => const ProductDetail(),
@@ -33,22 +39,17 @@ class _MyAppState extends State<MyApp> {
         MyRoutes.PersonalDetail: (context) => const PersonalDetail(),
         MyRoutes.PdfPage: (context) => const PdfPage(),
       },
-      debugShowCheckedModeBanner: false,
-      darkTheme: (theme) ? ThemeData.light() : ThemeData.dark(),
-      theme: ThemeData(
-        useMaterial3: true,
-      ),
       home: Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              setState(() {
-                filter = "";
-              });
-            },
-            icon: const Icon(Icons.lock_reset_outlined),
-          ),
           actions: [
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  filter = "";
+                });
+              },
+              icon: const Icon(Icons.lock_reset_outlined),
+            ),
             IconButton(
               onPressed: () {},
               icon: const Text(
@@ -100,66 +101,104 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
             Expanded(
-              flex: 13,
-              child: (filter.isEmpty)
-                  ? GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                      ),
-                      itemCount: product.length,
-                      itemBuilder: (context, index) => Container(
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 140,
-                              width: 170,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image:
-                                        NetworkImage(product[index].thumbnail),
-                                    fit: BoxFit.fill),
-                              ),
-                            ),
-                            Text(product[index].category),
-                          ],
+                flex: 13,
+                child: (filter.isEmpty)
+                    ? GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 2 / 2.4,
+                          mainAxisSpacing: 5,
+                          crossAxisSpacing: 5,
                         ),
-                      ),
-                    )
-                  : GridView(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                      ),
-                      children: List.generate(filterproduct.length, (index) {
-                        if (filterproduct[index]!.category == filter) {
-                          return Column(
-                            children: [
-                              Container(
-                                height: 140,
-                                width: 170,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                          filterproduct[index]!.thumbnail),
-                                      fit: BoxFit.fill),
+                        itemCount: product.length,
+                        itemBuilder: (context, index) => Card(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                  MyRoutes.ProductDetail,
+                                  arguments: index);
+                            },
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 140,
+                                  width: 170,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: NetworkImage(
+                                            product[index].thumbnail),
+                                        fit: BoxFit.fill),
+                                  ),
                                 ),
-                              ),
-                              Text(filterproduct[index]!.category),
-                            ],
-                          );
-                        } else {
-                          return Container();
-                        }
-                      }),
-                      // children: allProduct.map((element) {
-                      //    else {
-                      //     return Container();
-                      //   }
-                      // }).toList(),
-                    ),
-            ),
+                                Text(product[index].title),
+                                Text(
+                                  "₹ ${product[index].price}",
+                                  maxLines: 1,
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                    : Card(
+                        child: GridView(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 2 / 2.4,
+                            mainAxisSpacing: 5,
+                            crossAxisSpacing: 5,
+                          ),
+                          children:
+                              List.generate(filterproduct.length, (index) {
+                            if (filterproduct[index]!.category == filter) {
+                              return Column(
+                                children: [
+                                  Container(
+                                    height: 140,
+                                    width: 170,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: NetworkImage(
+                                              filterproduct[index]!.thumbnail),
+                                          fit: BoxFit.fill),
+                                    ),
+                                  ),
+                                  Text(filterproduct[index]!.title),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "₹ ${filterproduct[index]!.price}",
+                                        maxLines: 1,
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      FloatingActionButton(
+                                        onPressed: () {},
+                                        mini: true,
+                                        child: const Icon(
+                                            Icons.shopping_cart_outlined),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              );
+                            } else {
+                              return Container();
+                            }
+                          }),
+                        ),
+                      )),
           ],
         ),
+        backgroundColor: Colors.grey.shade200,
       ),
     );
   }
