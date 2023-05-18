@@ -96,7 +96,7 @@ class _PersonalDetailState extends State<PersonalDetail> {
                     validator: (val) {
                       if (val!.isEmpty) {
                         return "Enter Phone Number";
-                      } else if (val!.length < 10) {
+                      } else if (val.length < 10) {
                         return "Invalid Number";
                       } else {
                         return null;
