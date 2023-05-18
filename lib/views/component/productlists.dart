@@ -1926,9 +1926,11 @@ List<Map> products = [
 
 List<Product> product = products.map((e) => Product.fromMap(data: e)).toList();
 
-List addcartproduct = [];
+List images = [];
 
-List likedproduct = [];
+List<Product> addcartproducts = [];
+
+List<Product> likedproducts = [];
 
 List category = [
   "laptops",
@@ -1952,3 +1954,9 @@ List category = [
   "skincare",
   "fragrances",
 ];
+
+class Myvariable {
+  static int? phoneno;
+  static String? mail;
+  static String? name;
+}

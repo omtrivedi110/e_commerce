@@ -18,7 +18,10 @@ class _ProductDetailState extends State<ProductDetail> {
       appBar: AppBar(
         actions: [
           IconButton(
-              onPressed: () {}, icon: const Icon(Icons.shopping_cart_outlined)),
+              onPressed: () {
+                Navigator.of(context).pushNamed(MyRoutes.AddedCartPage);
+              },
+              icon: const Icon(Icons.shopping_cart_outlined)),
         ],
         title: const Text("Detail Page"),
       ),
@@ -55,6 +58,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           height: s.height * 0.2,
                           child: Row(
                             children: [
+                              // Image.network(images[0]),
                               Image.network(products[index]['images'][0]),
                               Image.network(products[index]['images'][1]),
                             ],
@@ -64,19 +68,6 @@ class _ProductDetailState extends State<ProductDetail> {
                     ),
                   ),
                 ),
-                Transform.translate(
-                    offset: const Offset(320, 10),
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.of(context)
-                            .pushNamed(MyRoutes.likedpage, arguments: index);
-                      },
-                      icon: Icon(
-                        Icons.favorite_border_rounded,
-                        size: s.height * 0.05,
-                        color: Colors.redAccent,
-                      ),
-                    )),
               ],
             ),
             SizedBox(height: s.height * 0.01),
@@ -102,7 +93,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       const Spacer(),
                       IconButton(
                         onPressed: () {
-                          addcartproduct.add(product[index]);
+                          likedproducts.add(product[index]);
                           Navigator.of(context)
                               .pushNamed(MyRoutes.likedpage, arguments: index);
                         },
@@ -111,7 +102,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       ),
                       IconButton(
                         onPressed: () {
-                          addcartproduct.add(product[index]);
+                          addcartproducts.add(product[index]);
                           Navigator.of(context).pushNamed(
                               MyRoutes.AddedCartPage,
                               arguments: index);
@@ -137,6 +128,10 @@ class _ProductDetailState extends State<ProductDetail> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          if (product[index] == product[index]) {
+            addcartproducts.remove(product[index]);
+          }
+          addcartproducts.add(product[index]);
           Navigator.of(context)
               .pushNamed(MyRoutes.AddedCartPage, arguments: index);
         },

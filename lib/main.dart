@@ -50,7 +50,9 @@ class _MyAppState extends State<MyApp> {
               icon: const Icon(Icons.lock_reset_outlined),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(MyRoutes.likedpage);
+              },
               icon: const Text(
                 "♡",
                 style: TextStyle(fontSize: 24),
@@ -64,7 +66,9 @@ class _MyAppState extends State<MyApp> {
                 icon: Icon(
                     (theme) ? Icons.dark_mode_outlined : Icons.light_mode)),
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed(MyRoutes.AddedCartPage);
+                },
                 icon: const Icon(Icons.shopping_cart_outlined)),
           ],
           title: const Text(
@@ -117,9 +121,14 @@ class _MyAppState extends State<MyApp> {
                               Navigator.of(context).pushNamed(
                                   MyRoutes.ProductDetail,
                                   arguments: index);
+                              for (var element in products) {
+                                images.add(element[index]['image']);
+                              }
                             },
                             child: SingleChildScrollView(
                               child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
                                     height: 140,
@@ -137,7 +146,7 @@ class _MyAppState extends State<MyApp> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        "₹ ${product[index].price}",
+                                        "\$ ${product[index].price}",
                                         maxLines: 1,
                                         style: const TextStyle(
                                             fontSize: 18,
@@ -145,15 +154,17 @@ class _MyAppState extends State<MyApp> {
                                       ),
                                       FloatingActionButton(
                                         onPressed: () {
+                                          if (product[index] ==
+                                              product[index]) {
+                                            addcartproducts
+                                                .remove(product[index]);
+                                          }
+
+                                          addcartproducts.add(product[index]);
                                           Navigator.of(context).pushNamed(
-                                              MyRoutes.AddedCartPage,
-                                              arguments: index);
-                                          addcartproduct.add(product[index]);
-                                          print(
-                                              "---------------------------------");
-                                          print(product[index]);
-                                          print(
-                                              "---------------------------------");
+                                            MyRoutes.AddedCartPage,
+                                            arguments: index,
+                                          );
                                         },
                                         mini: true,
                                         child: const Icon(
@@ -167,57 +178,63 @@ class _MyAppState extends State<MyApp> {
                           ),
                         ),
                       )
-                    : Card(
-                        child: GridView(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 2 / 2.4,
-                            mainAxisSpacing: 5,
-                            crossAxisSpacing: 5,
-                          ),
-                          children:
-                              List.generate(filterproduct.length, (index) {
-                            if (filterproduct[index]!.category == filter) {
-                              return Column(
-                                children: [
-                                  Container(
-                                    height: 140,
-                                    width: 170,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              filterproduct[index]!.thumbnail),
-                                          fit: BoxFit.fill),
-                                    ),
-                                  ),
-                                  Text(filterproduct[index]!.title),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "₹ ${filterproduct[index]!.price}",
-                                        maxLines: 1,
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      FloatingActionButton(
-                                        onPressed: () {},
-                                        mini: true,
-                                        child: const Icon(
-                                            Icons.shopping_cart_outlined),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              );
-                            } else {
-                              return Container();
-                            }
-                          }),
+                    : GridView(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 2 / 2.4,
+                          mainAxisSpacing: 5,
+                          crossAxisSpacing: 5,
                         ),
+                        children: List.generate(filterproduct.length, (index) {
+                          if (filterproduct[index]!.category == filter) {
+                            return Card(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                      MyRoutes.ProductDetail,
+                                      arguments: index);
+                                },
+                                child: SingleChildScrollView(
+                                  child: Column(children: [
+                                    Container(
+                                      height: 140,
+                                      width: 170,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                filterproduct[index]!
+                                                    .thumbnail),
+                                            fit: BoxFit.fill),
+                                      ),
+                                    ),
+                                    Text(filterproduct[index]!.title),
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "\$ ${filterproduct[index]!.price}",
+                                            maxLines: 1,
+                                            style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          FloatingActionButton(
+                                            onPressed: () {},
+                                            mini: true,
+                                            child: const Icon(
+                                                Icons.shopping_cart_outlined),
+                                          ),
+                                        ]),
+                                  ]),
+                                ),
+                              ),
+                            );
+                          } else {
+                            return Container();
+                          }
+                        }),
                       )),
           ],
         ),
